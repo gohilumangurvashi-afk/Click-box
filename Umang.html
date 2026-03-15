@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Click the Box Game</title>
+
+<style>
+body{
+  text-align:center;
+  font-family:Arial;
+}
+
+#box{
+  width:120px;
+  height:120px;
+  background:red;
+  margin:50px auto;
+  cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Click the Box Game</h1>
+<p>Score: <span id="score">0</span></p>
+
+<div id="box"></div>
+
+<script>
+
+let score = 0;
+
+document.getElementById("box").onclick = function(){
+
+score++;
+
+document.getElementById("score").innerText = score;
+
+let x = Math.random()*300;
+let y = Math.random()*300;
+
+this.style.marginLeft = x + "px";
+this.style.marginTop = y + "px";
+
+};
+
+</script>
+
+</body>
+</html>
