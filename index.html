@@ -1,54 +1,145 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Click the Box Game</title>
 
 <style>
+
 body{
-text-align:center;
+margin:0;
 font-family:Arial;
+text-align:center;
+color:white;
+
+background: linear-gradient(135deg,#ff7e5f,#6a5af9);
+height:100vh;
+overflow:hidden;
+}
+
+h1{
+margin-top:10px;
+}
+
+#info{
+font-size:20px;
+margin-bottom:20px;
 }
 
 #box{
-width:120px;
-height:120px;
-background-image: url("bg.jpg"); 
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+width:90px;
+height:90px;
+background:#ff3b3b;
+border-radius:12px;
+position:absolute;
+cursor:pointer;
+transition:transform 0.15s;
+}
+
+#box:active{
+transform:scale(0.85);
+}
+
+#gameOver{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+justify-content:center;
+align-items:center;
+flex-direction:column;
+}
+
+button{
+padding:12px 25px;
+font-size:18px;
+border:none;
+border-radius:8px;
 cursor:pointer;
 }
-  #box:hover{
-    background:"green";
-  }
-</style>
 
+</style>
 </head>
 
 <body>
 
-<h1>Click the Box Game</h1>
-<p>Score: <span id="score">0</span></p>
+<h1>Click The Box</h1>
+
+<div id="info">
+Score: <span id="score">0</span> |
+Time: <span id="time">10</span>
+</div>
 
 <div id="box"></div>
 
+<div id="gameOver">
+<h1>Game Over</h1>
+<p>Your Score: <span id="finalScore"></span></p>
+<button onclick="restart()">Play Again</button>
+</div>
+
+<audio id="clickSound">
+<source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav">
+</audio>
+
 <script>
 
-let score = 0;
+let score = 0
+let time = 10
 
-document.getElementById("box").onclick = function(){
+const box = document.getElementById("box")
+const clickSound = document.getElementById("clickSound")
 
-score++;
+function moveBox(){
 
-document.getElementById("score").innerText = score;
+let x = Math.random()*(window.innerWidth-100)
+let y = Math.random()*(window.innerHeight-150)
 
-let x = Math.random()*300;
-let y = Math.random()*300;
+box.style.left = x+"px"
+box.style.top = y+"px"
 
-this.style.marginLeft = x + "px";
-this.style.marginTop = y + "px";
+}
 
-};
+box.onclick=function(){
+
+score++
+document.getElementById("score").innerText=score
+
+clickSound.currentTime=0
+clickSound.play()
+
+moveBox()
+
+}
+
+moveBox()
+
+let timer=setInterval(function(){
+
+time--
+document.getElementById("time").innerText=time
+
+if(time<=0){
+
+clearInterval(timer)
+
+box.style.display="none"
+
+document.getElementById("finalScore").innerText=score
+document.getElementById("gameOver").style.display="flex"
+
+}
+
+},1000)
+
+function restart(){
+
+location.reload()
+
+}
 
 </script>
 
